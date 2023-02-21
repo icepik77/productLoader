@@ -4,13 +4,20 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import BasicSelect from '@/components/select'
 import myStyles from '@/styles/myStyles.module.scss'
-import BasicTextFields from '@/components/textInput'
-import MultilineTextFields from '@/components/multiline'
-import BasicButtons from '@/components/button'
+import TextField from '@mui/material/TextField'
+import Button, { ButtonProps } from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
+import { grey } from '@mui/material/colors'
+import photo from '../assets/img/photo.png'
 
 
-
-
+// const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+//   color: theme.palette.getContrastText(grey[500]),
+//   backgroundColor: grey[500],
+//   '&:hover': {
+//     backgroundColor: grey[700],
+//   },
+// }));
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,34 +34,38 @@ export default function Home() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <main className={styles.main}>
-        <div className={myStyles.topBlock}>
-          <h1>
-            Добавление товара
-          </h1>
-          <BasicSelect />
+      <div className={myStyles.topBlock}>
+        <h1>
+          Добавление товара
+        </h1>
+        <BasicSelect />
+      </div>
+      <div className={myStyles.product}>
+        <div className={myStyles.product__add}>
+          <form action="" className={myStyles.form}>
+            <div className={myStyles.form__content}>
+              <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
+              <input type="text" id="nameProduct" className={myStyles.inputText} />
+
+              <label htmlFor="productDescription">Описание товара</label>
+              <textarea name="Text1" id="filled-textarea productDescription" cols={40} rows={5} className={myStyles.inputText}></textarea>
+
+              <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
+              <input type="text" id="productImage" className={myStyles.inputText} />
+
+              <label htmlFor="" className={myStyles.inputLabel}>Цена товара</label>
+              <input type="text" id="productCost" className={myStyles.inputText} />
+
+              <Button variant="contained" disabled className={myStyles.Button}>Добавить товар</Button>
+            </div>
+          </form>
         </div>
-        <div className='product'>
-          <div className='product__add'>
-            <form action="">
-              Наименование товара
-              <BasicTextFields />
-              Описание товара
-              <MultilineTextFields />
-              Ссылка на изображение товара
-              <BasicTextFields />
-              Цена товара
-              <BasicTextFields />
-              <BasicButtons />
-            </form>
-
-
-          </div>
-          <div className='product__show'>
-
+        <div className={myStyles.product__show}>
+          <div>
+            <img src="" alt="" />
           </div>
         </div>
-      </main>
+      </div>
     </>
   )
 }
