@@ -9,19 +9,30 @@ import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 import photo from '../assets/img/photo.png'
+import { useState } from 'react'
 
+interface IProduct {
+  image: string,
+  name: string,
+  description: string,
+  price: number
+}
 
-// const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
-//   color: theme.palette.getContrastText(grey[500]),
-//   backgroundColor: grey[500],
-//   '&:hover': {
-//     backgroundColor: grey[700],
-//   },
-// }));
 
 const inter = Inter({ subsets: ['latin'] })
 
+
+// const [newProduct, setProduct] = useState()
+
 export default function Home() {
+
+  const [products, addProducts] = useState<IProduct[]>([{
+    image: "https://pixel24.ru/page_images/images/08-eos-r-adaptors-control-ring-customise-function-v4_161193699623451.jpg",
+    name: "Фотоаппарат",
+    description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
+    price: 10000
+  },])
+
   return (
     <>
       <Head>
@@ -34,38 +45,60 @@ export default function Home() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       </Head>
-      <div className={myStyles.topBlock}>
-        <h1>
-          Добавление товара
-        </h1>
-        <BasicSelect />
-      </div>
-      <div className={myStyles.product}>
-        <div className={myStyles.product__add}>
-          <form action="" className={myStyles.form}>
-            <div className={myStyles.form__content}>
-              <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
-              <input type="text" id="nameProduct" className={myStyles.inputText} />
-
-              <label htmlFor="productDescription">Описание товара</label>
-              <textarea name="Text1" id="filled-textarea productDescription" cols={40} rows={5} className={myStyles.inputText}></textarea>
-
-              <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
-              <input type="text" id="productImage" className={myStyles.inputText} />
-
-              <label htmlFor="" className={myStyles.inputLabel}>Цена товара</label>
-              <input type="text" id="productCost" className={myStyles.inputText} />
-
-              <Button variant="contained" disabled className={myStyles.Button}>Добавить товар</Button>
-            </div>
-          </form>
+      <div className={myStyles.wrapper}>
+        <div className={myStyles.topBlock}>
+          <h1>
+            Добавление товара
+          </h1>
+          <BasicSelect />
         </div>
-        <div className={myStyles.product__show}>
-          <div>
-            <img src="" alt="" />
+        <div className={myStyles.product}>
+          <div className={myStyles.product__add}>
+            <form action="" className={myStyles.form}>
+              <div className={myStyles.form__content}>
+                <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
+                <input type="text" id="nameProduct" className={myStyles.inputText} />
+
+                <label htmlFor="productDescription">Описание товара</label>
+                <textarea name="Text1" id="filled-textarea productDescription" cols={40} rows={5} className={myStyles.inputText}></textarea>
+
+                <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
+                <input type="text" id="productImage" className={myStyles.inputText} />
+
+                <label htmlFor="productCost" className={myStyles.inputLabel}>Цена товара</label>
+                <input type="text" id="productCost" className={myStyles.inputText} />
+
+                <Button variant="contained" disabled className={myStyles.Button}>Добавить товар</Button>
+              </div>
+            </form>
+          </div>
+          <div className={myStyles.product__show}>
+            {products.map((element, index) =>
+              <div className={myStyles.card}>
+                <Image
+                  src={element.image}
+                  alt="Picture of the author"
+                  width={332}
+                  height={200}
+                // blurDataURL="data:..." automatically provided
+                // placeholder="blur" // Optional blur-up while loading
+                />
+                <div className={myStyles.card__content}>
+                  <h3 className={myStyles.card__title}>element.name</h3>
+                  <div className={myStyles.card__description}>
+                    {element.description}
+                  </div>
+                  <div className={myStyles.card__price}>
+                    {element.price}
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
+
     </>
   )
 }

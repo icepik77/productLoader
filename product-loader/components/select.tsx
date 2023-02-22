@@ -4,6 +4,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Height } from '@mui/icons-material';
 
 export default function BasicSelect() {
     const [sort, setSort] = React.useState('');
@@ -13,7 +14,7 @@ export default function BasicSelect() {
     };
 
     return (
-        <Box sx={{ minWidth: 120 }}>
+        <Box sx={{ minWidth: 120, minHeight: 36 }}>
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Сортировать</InputLabel>
                 <Select
