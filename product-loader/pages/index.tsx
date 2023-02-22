@@ -22,7 +22,7 @@ interface IProduct {
 const inter = Inter({ subsets: ['latin'] })
 
 
-// const [newProduct, setProduct] = useState()
+
 
 export default function Home() {
 
@@ -32,6 +32,21 @@ export default function Home() {
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
     price: 10000
   },])
+  const [newProduct, setProduct] = useState<IProduct>({
+    image: "",
+    name: "",
+    description: "",
+    price: 0
+  })
+  const [timer, setTimer] = useState(null)
+
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProduct({ ...newProduct, [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value })
+  }
+  const changeHandlerTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setProduct({ ...newProduct, [(event.target as HTMLTextAreaElement).name]: (event.target as HTMLTextAreaElement).value })
+  }
 
   return (
     <>
@@ -57,16 +72,23 @@ export default function Home() {
             <form action="" className={myStyles.form}>
               <div className={myStyles.form__content}>
                 <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
-                <input type="text" id="nameProduct" className={myStyles.inputText} />
+                <input type="nameProduct" id="nameProduct" className={myStyles.inputText} onChange={(event) => changeHandler(event)} />
 
                 <label htmlFor="productDescription">Описание товара</label>
-                <textarea name="Text1" id="filled-textarea productDescription" cols={40} rows={5} className={myStyles.inputText}></textarea>
+                <textarea
+                  name="productDescription"
+                  id="filled-textarea productDescription"
+                  cols={40}
+                  rows={5}
+                  className={myStyles.inputText}
+                  onChange={(event) => changeHandlerTextArea(event)}>
+                </textarea>
 
                 <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
-                <input type="text" id="productImage" className={myStyles.inputText} />
+                <input onChange={(event) => changeHandler(event)} type="productImage" id="productImage" className={myStyles.inputText} />
 
                 <label htmlFor="productCost" className={myStyles.inputLabel}>Цена товара</label>
-                <input type="text" id="productCost" className={myStyles.inputText} />
+                <input onChange={(event) => changeHandler(event)} type="productCost" id="productCost" className={myStyles.inputText} />
 
                 <Button variant="contained" disabled className={myStyles.Button}>Добавить товар</Button>
               </div>
@@ -75,16 +97,9 @@ export default function Home() {
           <div className={myStyles.product__show}>
             {products.map((element, index) =>
               <div className={myStyles.card}>
-                <Image
-                  src={element.image}
-                  alt="Picture of the author"
-                  width={332}
-                  height={200}
-                // blurDataURL="data:..." automatically provided
-                // placeholder="blur" // Optional blur-up while loading
-                />
+                <img src={element.image} alt="" />
                 <div className={myStyles.card__content}>
-                  <h3 className={myStyles.card__title}>element.name</h3>
+                  <h3 className={myStyles.card__title}>{element.name}</h3>
                   <div className={myStyles.card__description}>
                     {element.description}
                   </div>
