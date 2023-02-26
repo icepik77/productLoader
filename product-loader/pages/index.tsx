@@ -9,13 +9,14 @@ import Button, { ButtonProps } from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 import photo from '../assets/img/photo.png'
+import cart from "../assets/img/cart.png"
 import { useState } from 'react'
 
 interface IProduct {
   image: string,
   name: string,
   description: string,
-  price: number
+  price: number | null
 }
 
 
@@ -31,21 +32,47 @@ export default function Home() {
     name: "Фотоаппарат",
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
     price: 10000
-  },])
+  },
+  {
+    image: "https://www.yarkiy.ru/system/uploads/preview/photo_storage/36413/PowerShot-SX620-HS-BK-FSL.jpg",
+    name: "Фотоаппарат",
+    description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
+    price: 100000
+  }
+  ])
   const [newProduct, setProduct] = useState<IProduct>({
     image: "",
     name: "",
     description: "",
-    price: 0
+    price: null
   })
-  const [timer, setTimer] = useState(null)
-
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+
     setProduct({ ...newProduct, [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value })
   }
   const changeHandlerTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+
     setProduct({ ...newProduct, [(event.target as HTMLTextAreaElement).name]: (event.target as HTMLTextAreaElement).value })
+  }
+  const addProduct = () => {
+
+    const copy = Object.assign([], products)
+    copy.push(newProduct)
+    addProducts(copy)
+    setProduct(
+      {
+        image: "",
+        name: "",
+        description: "",
+        price: null
+      }
+    )
+  }
+  const deleteProduct = (index: number) => {
+    const copy = Object.assign([], products)
+    delete copy[index]
+    addProducts(copy)
   }
 
   return (
@@ -72,39 +99,49 @@ export default function Home() {
             <form action="" className={myStyles.form}>
               <div className={myStyles.form__content}>
                 <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
-                <input type="nameProduct" id="nameProduct" className={myStyles.inputText} onChange={(event) => changeHandler(event)} />
+                <input type="nameProduct" value={newProduct.name} id="nameProduct" name='name' className={myStyles.inputText} onChange={(event) => changeHandler(event)} />
 
                 <label htmlFor="productDescription">Описание товара</label>
                 <textarea
-                  name="productDescription"
+                  name="description"
                   id="filled-textarea productDescription"
                   cols={40}
                   rows={5}
                   className={myStyles.inputText}
-                  onChange={(event) => changeHandlerTextArea(event)}>
-                </textarea>
+                  onChange={(event) => changeHandlerTextArea(event)}
+                  value={newProduct.description}
+                />
 
                 <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
-                <input onChange={(event) => changeHandler(event)} type="productImage" id="productImage" className={myStyles.inputText} />
+                <input onChange={(event) => changeHandler(event)} name="image" type="productImage" id="productImage" className={myStyles.inputText} value={newProduct.image} />
 
                 <label htmlFor="productCost" className={myStyles.inputLabel}>Цена товара</label>
-                <input onChange={(event) => changeHandler(event)} type="productCost" id="productCost" className={myStyles.inputText} />
+                <input onChange={(event) => changeHandler(event)} name="price" value={newProduct.price ? String(newProduct.price) : ''}
+                  type="productCost" id="productCost" className={myStyles.inputText}
+                />
 
-                <Button variant="contained" disabled className={myStyles.Button}>Добавить товар</Button>
+                <Button
+                  variant="contained"
+                  disabled={!newProduct.name || !newProduct.price || !newProduct.image}
+                  className={myStyles.Button}
+                  onClick={() => addProduct()}>
+                  Добавить товар
+                </Button>
               </div>
             </form>
           </div>
           <div className={myStyles.product__show}>
             {products.map((element, index) =>
-              <div className={myStyles.card}>
-                <img src={element.image} alt="" />
+              <div className={myStyles.card} key={index}>
+                <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteProduct(index)}></Image>
+                <img src={element.image} alt="Изображение товара" />
                 <div className={myStyles.card__content}>
                   <h3 className={myStyles.card__title}>{element.name}</h3>
                   <div className={myStyles.card__description}>
                     {element.description}
                   </div>
                   <div className={myStyles.card__price}>
-                    {element.price}
+                    {String(element.price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
                   </div>
                 </div>
               </div>

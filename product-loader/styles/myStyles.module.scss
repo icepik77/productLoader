@@ -45,6 +45,7 @@
 }
 .Button{
     background: #EEEEEE;
+    background: blue;
     border-radius: 10px;
     font-size: 12px;
     min-height: 36px;
@@ -76,6 +77,20 @@
     border-radius: 4px;
     color: #3F3F3F;
     margin: 0 0 16px 16px;
+    position: relative;
+    cursor: pointer;
+    &__cart{
+        display: none;
+    }
+    &:hover .card__cart {
+        display: block;
+        color: transparent;
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        right: -12px;
+        top: -10px;
+    }
     & img{
         width: 332px;
         height: 200px;
@@ -102,4 +117,5 @@
         line-height: 30px;
     }
 }
+
 
