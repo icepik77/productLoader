@@ -79,6 +79,7 @@
     margin: 0 0 16px 16px;
     position: relative;
     cursor: pointer;
+    // animation: addProduct .5s forwards;
     &__cart{
         display: none;
     }
@@ -115,6 +116,36 @@
         font-weight: 600;
         font-size: 24px;
         line-height: 30px;
+    }
+}
+.card-enter {
+  animation: addProduct .5s forwards;
+}
+.card-enter-active{
+    animation: addProduct .5s forwards;
+}
+.card-exit {
+  animation: addProduct .5s forwards;
+}
+
+@keyframes addProduct{
+    0% {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+@keyframes deleteProduct{
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(10px);
     }
 }
 

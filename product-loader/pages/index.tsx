@@ -10,13 +10,16 @@ import { styled } from '@mui/material/styles'
 import { grey } from '@mui/material/colors'
 import photo from '../assets/img/photo.png'
 import cart from "../assets/img/cart.png"
-import { useState } from 'react'
+import { useState, createRef, RefObject, Ref } from 'react'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition'
 
 interface IProduct {
   image: string,
   name: string,
   description: string,
-  price: number | null
+  price: number | null,
+  nodeRef: Ref<HTMLElement | undefined> | undefined
 }
 
 
@@ -27,24 +30,27 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 
-  const [products, addProducts] = useState<IProduct[]>([{
+  const [products, addProducts] = useState<IProduct[]>(() => [{
     image: "https://pixel24.ru/page_images/images/08-eos-r-adaptors-control-ring-customise-function-v4_161193699623451.jpg",
     name: "Фотоаппарат",
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-    price: 10000
+    price: 10000,
+    nodeRef: createRef()
   },
   {
     image: "https://www.yarkiy.ru/system/uploads/preview/photo_storage/36413/PowerShot-SX620-HS-BK-FSL.jpg",
     name: "Фотоаппарат",
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-    price: 100000
+    price: 100000,
+    nodeRef: createRef()
   }
   ])
   const [newProduct, setProduct] = useState<IProduct>({
     image: "",
     name: "",
     description: "",
-    price: null
+    price: null,
+    nodeRef: createRef()
   })
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +71,8 @@ export default function Home() {
         image: "",
         name: "",
         description: "",
-        price: null
+        price: null,
+        nodeRef: createRef()
       }
     )
   }
@@ -131,22 +138,25 @@ export default function Home() {
             </form>
           </div>
           <div className={myStyles.product__show}>
-            {products.map((element, index) =>
-              <div className={myStyles.card} key={index}>
-                <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteProduct(index)}></Image>
-                <img src={element.image} alt="Изображение товара" />
-                <div className={myStyles.card__content}>
-                  <h3 className={myStyles.card__title}>{element.name}</h3>
-                  <div className={myStyles.card__description}>
-                    {element.description}
+            <TransitionGroup className={myStyles.product__show} component="div">
+              {products.map((element, index, nodeRef) =>
+                <CSSTransition key={index} timeout={500} classNames={myStyles.card} nodeRef={nodeRef} mountOnEnter unmountOnExit>
+                  <div className={myStyles.card} key={index} ref={nodeRef}>
+                    <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteProduct(index)}></Image>
+                    <img src={element.image} alt="Изображение товара" />
+                    <div className={myStyles.card__content}>
+                      <h3 className={myStyles.card__title}>{element.name}</h3>
+                      <div className={myStyles.card__description}>
+                        {element.description}
+                      </div>
+                      <div className={myStyles.card__price}>
+                        {String(element.price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
+                      </div>
+                    </div>
                   </div>
-                  <div className={myStyles.card__price}>
-                    {String(element.price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
-                  </div>
-                </div>
-              </div>
-            )}
-
+                </CSSTransition>
+              )}
+            </TransitionGroup>
           </div>
         </div>
       </div>
