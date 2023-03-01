@@ -19,7 +19,6 @@ interface IProduct {
   name: string,
   description: string,
   price: number | null,
-  nodeRef: Ref<HTMLElement | undefined> | undefined
 }
 
 
@@ -34,23 +33,20 @@ export default function Home() {
     image: "https://pixel24.ru/page_images/images/08-eos-r-adaptors-control-ring-customise-function-v4_161193699623451.jpg",
     name: "Фотоаппарат",
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-    price: 10000,
-    nodeRef: createRef()
+    price: 10000
   },
   {
     image: "https://www.yarkiy.ru/system/uploads/preview/photo_storage/36413/PowerShot-SX620-HS-BK-FSL.jpg",
     name: "Фотоаппарат",
     description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-    price: 100000,
-    nodeRef: createRef()
+    price: 100000
   }
   ])
   const [newProduct, setProduct] = useState<IProduct>({
     image: "",
     name: "",
     description: "",
-    price: null,
-    nodeRef: createRef()
+    price: null
   })
 
   const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,8 +67,7 @@ export default function Home() {
         image: "",
         name: "",
         description: "",
-        price: null,
-        nodeRef: createRef()
+        price: null
       }
     )
   }
@@ -140,8 +135,8 @@ export default function Home() {
           <div className={myStyles.product__show}>
             <TransitionGroup className={myStyles.product__show} component="div">
               {products.map((element, index, nodeRef) =>
-                <CSSTransition key={index} timeout={500} classNames={myStyles.card} nodeRef={nodeRef} mountOnEnter unmountOnExit>
-                  <div className={myStyles.card} key={index} ref={nodeRef}>
+                <CSSTransition key={index} timeout={500} classNames={myStyles.card} mountOnEnter unmountOnExit>
+                  <div className={myStyles.card} key={index}>
                     <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteProduct(index)}></Image>
                     <img src={element.image} alt="Изображение товара" />
                     <div className={myStyles.card__content}>
