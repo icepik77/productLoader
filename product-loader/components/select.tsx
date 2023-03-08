@@ -6,7 +6,13 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Height } from '@mui/icons-material';
 
-export default function BasicSelect() {
+interface ISort {
+    name: () => void,
+    ascending: () => void,
+    descending: () => void
+}
+
+export default function BasicSelect(props: ISort) {
     const [sort, setSort] = React.useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
@@ -24,9 +30,9 @@ export default function BasicSelect() {
                     label="Сортировка"
                     onChange={handleChange}
                 >
-                    <MenuItem value={"По умолчанию"}>По умолчанию</MenuItem>
-                    <MenuItem value={"Сначала дешевле"}>Сначала дешевле</MenuItem>
-                    <MenuItem value={"Сначала дороже"}>Сначала дороже</MenuItem>
+                    <MenuItem onClick={props.name} value={"По умолчанию"}>По умолчанию</MenuItem>
+                    <MenuItem onClick={props.ascending} value={"Сначала дешевле"}>Сначала дешевле</MenuItem>
+                    <MenuItem onClick={props.descending} value={"Сначала дороже"}>Сначала дороже</MenuItem>
                 </Select>
             </FormControl>
         </Box>

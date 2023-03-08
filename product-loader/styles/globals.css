@@ -116,3 +116,38 @@ a {
   }
 }
 
+.card-enter {
+  animation: addProduct .5s forwards;
+}
+.card-enter-active{
+  animation: addProduct .5s forwards;
+}
+.card-exit-active {
+  animation: deleteProduct .5s forwards;
+}
+
+
+@keyframes addProduct{
+    0% {
+        opacity: 0;
+        transform: translateX(-6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
+@keyframes deleteProduct{
+    0% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+    50% {
+      opacity: 0.5;
+      transform: translateY(5px);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+}

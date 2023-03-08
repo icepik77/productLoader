@@ -124,9 +124,10 @@
 .card-enter-active{
     animation: addProduct .5s forwards;
 }
-.card-exit {
-  animation: addProduct .5s forwards;
-}
+// .card-exit {
+//   animation: deleteProduct .5s forwards;
+// }
+
 
 @keyframes addProduct{
     0% {
