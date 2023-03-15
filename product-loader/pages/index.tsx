@@ -12,7 +12,7 @@ import photo from '../assets/img/photo.png'
 import { useState, createRef, RefObject, Ref, useEffect } from 'react'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition'
-import IProduct from '@/types/product'
+import IProduct from '@/types/product.type'
 import ProductView from '@/components/productView'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -22,20 +22,20 @@ export default function Home() {
 
 
 
-  const deleteProduct = (index: number) => {
+  // const deleteProduct = (index: number) => {
 
-    // addProducts(products?.filter((el) => products[index] != el) || null)
+  //   // addProducts(products?.filter((el) => products[index] != el) || null)
 
-    const copy = Object.assign([], products)
-    copy.splice(index, 1)
-    addProducts(copy)
-    localStorage.setItem("products", JSON.stringify(copy))
-  }
+  //   const copy = Object.assign([], products)
+  //   copy.splice(index, 1)
+  //   addProducts(copy)
+  //   localStorage.setItem("products", JSON.stringify(copy))
+  // }
 
   return (
     <>
 
-      <div className={myStyles.wrapper}>
+      {/* <div className={myStyles.wrapper}>
 
         <div className={myStyles.product}>
           <div className={myStyles.product__add}>
@@ -75,7 +75,7 @@ export default function Home() {
           </div>
           <ProductView products={products} />
         </div>
-      </div>
+      </div> */}
 
     </>
   )

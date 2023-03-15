@@ -2,20 +2,35 @@
 import myStyles from '@/styles/myStyles.module.scss'
 import Button, { ButtonProps } from '@mui/material/Button'
 import React, { useState, createRef, RefObject, Ref, useEffect } from 'react'
-import IProduct from '@/types/product'
+import IProduct from '@/types/product.type'
 import ProductView from '@/components/productView'
+import { useActions } from '@/hooks/useActions'
+import { useTypedSelector } from '@/hooks/useTypeSelector'
 
+export function uniqueId(): string {
+    const dateString = Date.now().toString(36)
+    const randomness = Math.random().toString(36).substr(2)
+    return dateString + randomness
+}
 
-const NewProduct: React.FC = () => {
+const FormAddProduct: React.FC = () => {
+
+    const { addItem, setProducts, removeItem } = useActions()
+
+    const { products } = useTypedSelector(state => state)
 
     const [newProduct, setProduct] = useState<IProduct>({
-        image: "",
-        name: "",
+        id: uniqueId(),
+        title: "",
+        price: 0,
         description: "",
-        price: null
+        category: "",
+        image: "",
+        rating: {
+            rate: 0,
+            count: 0
+        }
     })
-
-
 
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -29,19 +44,25 @@ const NewProduct: React.FC = () => {
 
     const addProduct = () => {
 
-        const copy = Object.assign([], products)
+        let copy = Object.assign([], products)
         copy.push(newProduct)
-        addProducts(copy)
+        setProducts(copy)
         setProduct(
             {
-                image: "",
-                name: "",
+                id: uniqueId(),
+                title: "",
+                price: 0,
                 description: "",
-                price: null
+                category: "",
+                image: "",
+                rating: {
+                    rate: 0,
+                    count: 0
+                }
             }
         )
-
-        localStorage.setItem("products", JSON.stringify(products))
+        console.log("Products в addProduct:" + copy)
+        localStorage.setItem("products", JSON.stringify(copy))
     }
 
     return (
@@ -51,7 +72,7 @@ const NewProduct: React.FC = () => {
                     <form action="" className={myStyles.form}>
                         <div className={myStyles.form__content}>
                             <label htmlFor="nameProduct" className={myStyles.inputLabel}>Наименование товара</label>
-                            <input type="nameProduct" value={newProduct.name} id="nameProduct" name='name' className={myStyles.inputText} onChange={(event) => changeHandler(event)} />
+                            <input type="nameProduct" value={newProduct.title} id="nameProduct" name='title' className={myStyles.inputText} onChange={(event) => changeHandler(event)} />
 
                             <label htmlFor="productDescription">Описание товара</label>
                             <textarea
@@ -74,7 +95,7 @@ const NewProduct: React.FC = () => {
 
                             <Button
                                 variant="contained"
-                                disabled={!newProduct.name || !newProduct.price || !newProduct.image}
+                                disabled={!newProduct.title || !newProduct.price || !newProduct.image}
                                 className={myStyles.Button}
                                 onClick={() => addProduct()}>
                                 Добавить товар
@@ -82,8 +103,11 @@ const NewProduct: React.FC = () => {
                         </div>
                     </form>
                 </div>
-                <ProductView products={products} />
+                <ProductView deleteProduct={true} />
             </div>
         </>
     )
-} 
+}
+
+export default FormAddProduct
+
