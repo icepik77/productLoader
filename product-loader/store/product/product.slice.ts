@@ -3,6 +3,8 @@ import IProduct from '@/types/product.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
+
+
 const initialState: IProduct[] = []
 
 export const productSlice = createSlice({

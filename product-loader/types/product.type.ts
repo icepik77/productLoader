@@ -3,9 +3,14 @@ import IRating from "./rating.type";
 export default interface IProduct {
     id: string,
     title: string,
-    price: number,
     description: string,
+    price: number,
+    discountPercentage: number,
+    rating: IRating,
+    stock: number,
+    brand: string,
     category: string,
-    image: string,
-    rating: IRating
+    thumbnail: string,
+    images: string[],
+
 }

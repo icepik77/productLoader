@@ -9,25 +9,40 @@ import { useTypedSelector } from '@/hooks/useTypeSelector'
 import { ReactElement, JSXElementConstructor, ReactFragment, ReactPortal, Key, useEffect, useState } from 'react'
 import { uniqueId } from './formAddProduct'
 import { types } from 'sass'
+import InfiniteScroll from 'react-infinite-scroller'
 
-const ProductView: React.FC<IProductView> = ({ deleteProduct }) => {
+const ProductView: React.FC<IProductView> = ({ products, deleteProduct, loadFunc }) => {
 
-    const { products } = useTypedSelector(state => state)
-    const { setProducts } = useActions()
-
-    const deleteItem = (id: string) => {
-
-        let copy = Object.assign([], products)
-        copy = copy.filter(product => product["id"] !== id)
-
-        setProducts(copy)
-        localStorage.setItem("products", JSON.stringify(copy))
-    }
+    let page: number = 1
 
     return (
         <div className={myStyles.product__show}>
             <TransitionGroup className={myStyles.product__show} component="div">
-                {products && products.map((element, index) =>
+                <InfiniteScroll
+                    pageStart={page}
+                    loadMore={loadFunc}
+                    hasMore={true || false}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                >
+                    {products && products.map((element, index) =>
+                        <CSSTransition key={index} timeout={500} classNames="card" mountOnEnter unmountOnExit>
+                            <div className={myStyles.card} key={index}>
+                                {deleteProduct && <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteProduct(element.id)}></Image>}
+                                <img src={element.images[0]} alt="Изображение товара" />
+                                <div className={myStyles.card__content}>
+                                    <h3 className={myStyles.card__title}>{element.title}</h3>
+                                    <div className={myStyles.card__description}>
+                                        {element.description}
+                                    </div>
+                                    <div className={myStyles.card__price}>
+                                        {String(element.price).replace(/\B(?=(\d{3})+(?!\d))/g, " ")}
+                                    </div>
+                                </div>
+                            </div>
+                        </CSSTransition>
+                    )}
+                </InfiniteScroll>
+                {/* {products && products.map((element, index) =>
                     <CSSTransition key={index} timeout={500} classNames="card" mountOnEnter unmountOnExit>
                         <div className={myStyles.card} key={index}>
                             {deleteProduct && <Image src={cart} alt="Удалить" className={myStyles.card__cart} onClick={() => deleteItem(element.id)}></Image>}
@@ -43,7 +58,7 @@ const ProductView: React.FC<IProductView> = ({ deleteProduct }) => {
                             </div>
                         </div>
                     </CSSTransition>
-                )}
+                )} */}
             </TransitionGroup>
         </div>
     )

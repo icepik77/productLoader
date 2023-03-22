@@ -65,6 +65,19 @@ const FormAddProduct: React.FC = () => {
         localStorage.setItem("products", JSON.stringify(copy))
     }
 
+
+    // const deleteProduct = (id: string) => {
+
+    //     const { products } = useTypedSelector(store => store)
+    //     const {setProducts} = useActions()
+
+    //     let copy = Object.assign([], products)
+    //     copy = copy.filter(product => product["id"] !== id)
+
+    //     setProducts(copy)
+    //     localStorage.setItem("products", JSON.stringify(copy))
+    // }
+
     return (
         <>
             <div className={myStyles.product}>

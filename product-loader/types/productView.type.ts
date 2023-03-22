@@ -1,5 +1,7 @@
 import IProduct from "./product.type";
 
 export default interface IProductView {
-    deleteProduct: boolean,
+    products: IProduct[]
+    deleteProduct?: (id: string) => void,
+    loadFunc: (page: number) => void
 }
