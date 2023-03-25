@@ -21,7 +21,7 @@ const ProductView: React.FC<IProductView> = ({ products, deleteProduct, loadFunc
                 <InfiniteScroll
                     pageStart={page}
                     loadMore={loadFunc}
-                    hasMore={true || false}
+                    hasMore={false}
                     loader={<div className="loader" key={0}>Loading ...</div>}
                 >
                     {products && products.map((element, index) =>

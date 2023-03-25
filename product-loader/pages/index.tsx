@@ -2,16 +2,20 @@ import ProductView from "@/components/productView"
 import { useActions } from "@/hooks/useActions"
 import { useTypedSelector } from "@/hooks/useTypeSelector"
 import ProductLayout from "@/layouts/productLayout"
+import { productApi } from "@/store/product/product.api"
 import IProduct from "@/types/product.type"
+import { GetServerSideProps, InferGetServerSidePropsType } from "next"
 import { Head } from "next/document"
 import { FC, useEffect } from "react"
 
 
-const Catalog: FC = (props) => {
+const Catalog: FC<{ data: IProduct[] }> = ({ data }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 
   const { products } = useTypedSelector(store => store)
 
-  let ProductsPros: IProduct[] = products
+  // let ProductsPros: IProduct[] = products ? [...products, ...ProductsApi] : ProductsApi
+
+  let ProductsPros: IProduct[] = [...products, ...data]
 
   // const initProductsProps = async (): Promise<IProduct[]> => {
 
@@ -21,6 +25,17 @@ const Catalog: FC = (props) => {
   //   return [...products, ...json.products]
   // }
 
+  // function getData() {
+  //   let ProductsApi: IProduct[] = []
+  //   fetch("https://dummyjson.com/products?limit=10")
+  //     .then(res => res.json())
+  //     .then(json => {
+  //       console.log(json)
+  //       ProductsPros = [...json.products]
+  //     })
+  // }
+
+  // getData()
 
 
 
@@ -65,15 +80,20 @@ const Catalog: FC = (props) => {
 
 export default Catalog
 
-export async function getServerSideProps({ }) {
+export const getServerSideProps: GetServerSideProps<{ data: IProduct[] }> = async () => {
   let ProductsApi: IProduct[] = []
-  fetch("https://dummyjson.com/products?limit=10")
+  await fetch("https://dummyjson.com/products?limit=30")
     .then(res => res.json())
     .then(json => {
       console.log(json)
       ProductsApi = [...json.products]
     })
+
+  // const res = await fetch('https://dummyjson.com/products?limit=10')
+  // const data = await res.json()
+  // ProductsApi = data.products
+
   return {
-    props: { ProductsApi }
+    props: { data: ProductsApi }
   }
 }
