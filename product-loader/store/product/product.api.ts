@@ -1,4 +1,4 @@
-import IProduct from '@/types/product.type'
+import IProduct from '@/types/Product'
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 

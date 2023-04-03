@@ -1,4 +1,4 @@
-import IRating from "./rating.type";
+import IRating from "./Rating";
 
 export default interface IProduct {
     id: string,

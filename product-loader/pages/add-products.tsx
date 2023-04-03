@@ -12,41 +12,10 @@ import { FC, useEffect } from "react"
 const NewProduct: FC = () => {
 
     const { removeItem, setProducts } = useActions()
-    const { products } = useTypedSelector(state => state)
 
     useEffect(() => {
-
-        let initialState = [{
-            id: uniqueId(),
-            image: "https://pixel24.ru/page_images/images/08-eos-r-adaptors-control-ring-customise-function-v4_161193699623451.jpg",
-            title: "Фотоаппарат",
-            description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-            price: 10000,
-            category: "",
-            rating: {
-                rate: 0,
-                count: 0
-            }
-        },
-        {
-            id: uniqueId(),
-            image: "https://www.yarkiy.ru/system/uploads/preview/photo_storage/36413/PowerShot-SX620-HS-BK-FSL.jpg",
-            title: "Фотоаппарат",
-            description: "Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк.",
-            price: 100000,
-            category: "",
-            rating: {
-                rate: 0,
-                count: 0
-            },
-        }
-        ]
         if (localStorage.products != "null") {
             setProducts(JSON.parse(localStorage.getItem("products") || ""))
-        }
-        else {
-            setProducts(initialState)
-            localStorage.setItem("products", JSON.stringify(initialState))
         }
     }, [])
 

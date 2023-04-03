@@ -1,4 +1,4 @@
-import IProduct from "./product.type";
+import IProduct from "./Product";
 
 export default interface IProductLayoutProps {
     title: string,

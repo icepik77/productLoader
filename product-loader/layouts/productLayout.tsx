@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react"
 import myStyles from '@/styles/myStyles.module.scss'
 import BasicSelect from "@/components/select"
-import IProduct from "@/types/product.type"
+import IProduct from "@/types/Product"
 import IProductLayoutProps from "@/types/productLayout.type"
 import { useTypedSelector } from "@/hooks/useTypeSelector"
 import { useActions } from "@/hooks/useActions"

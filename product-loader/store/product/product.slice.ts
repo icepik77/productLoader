@@ -1,5 +1,5 @@
 import { uniqueId } from '@/components/formAddProduct'
-import IProduct from '@/types/product.type'
+import IProduct from '@/types/Product'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 
@@ -19,8 +19,7 @@ export const productSlice = createSlice({
             return state.filter(product => product.id != action.payload.id)
         },
         setProducts: (state, action: PayloadAction<IProduct[]>) => {
-            state = action.payload
-            return state
+            return [...action.payload];
         }
     }
 })

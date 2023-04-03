@@ -1,8 +1,8 @@
 
 import myStyles from '@/styles/myStyles.module.scss'
-import Button, { ButtonProps } from '@mui/material/Button'
-import React, { useState, createRef, RefObject, Ref, useEffect } from 'react'
-import IProduct from '@/types/product.type'
+import Button from '@mui/material/Button'
+import React, { useState } from 'react'
+import IProduct from '@/types/Product'
 import ProductView from '@/components/productView'
 import { useActions } from '@/hooks/useActions'
 import { useTypedSelector } from '@/hooks/useTypeSelector'
@@ -15,7 +15,7 @@ export function uniqueId(): string {
 
 const FormAddProduct: React.FC = () => {
 
-    const { addItem, setProducts, removeItem } = useActions()
+    const { setProducts } = useActions()
 
     const { products } = useTypedSelector(state => state)
 
@@ -25,16 +25,44 @@ const FormAddProduct: React.FC = () => {
         price: 0,
         description: "",
         category: "",
-        image: "",
+        discountPercentage: 0,
+        stock: 0,
+        brand: "",
+        thumbnail: "",
+        images: [],
         rating: {
             rate: 0,
             count: 0
         }
     })
 
+    const [isValidPrice, setIsValidPrice] = useState(true)
+    const [isValid, setIsValid] = useState<boolean>(true)
+
+    const setImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const image = (event.target as HTMLInputElement).value
+        setProduct((prevProduct: IProduct) => ({
+            ...prevProduct,
+            images: [image, ...prevProduct.images.slice(1)]
+        }));
+    }
+
     const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 
         setProduct({ ...newProduct, [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value })
+    }
+
+    const changeHandlerPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        const inputVal = event.target.value;
+
+        // Проверяем, является ли значение числом
+        if (!isNaN(Number(inputVal))) {
+            setProduct({ ...newProduct, [(event.target as HTMLInputElement).name]: (event.target as HTMLInputElement).value })
+            setIsValidPrice(true)
+        } else {
+            setIsValidPrice(false)
+        }
     }
 
     const changeHandlerTextArea = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -54,7 +82,11 @@ const FormAddProduct: React.FC = () => {
                 price: 0,
                 description: "",
                 category: "",
-                image: "",
+                discountPercentage: 0,
+                stock: 0,
+                brand: "",
+                thumbnail: "",
+                images: ["",],
                 rating: {
                     rate: 0,
                     count: 0
@@ -64,19 +96,6 @@ const FormAddProduct: React.FC = () => {
         console.log("Products в addProduct:" + copy)
         localStorage.setItem("products", JSON.stringify(copy))
     }
-
-
-    // const deleteProduct = (id: string) => {
-
-    //     const { products } = useTypedSelector(store => store)
-    //     const {setProducts} = useActions()
-
-    //     let copy = Object.assign([], products)
-    //     copy = copy.filter(product => product["id"] !== id)
-
-    //     setProducts(copy)
-    //     localStorage.setItem("products", JSON.stringify(copy))
-    // }
 
     return (
         <>
@@ -99,16 +118,17 @@ const FormAddProduct: React.FC = () => {
                             />
 
                             <label htmlFor="productImage" className={myStyles.inputLabel}>Ссылка на изображение товара</label>
-                            <input onChange={(event) => changeHandler(event)} name="image" type="productImage" id="productImage" className={myStyles.inputText} value={newProduct.image} />
+                            <input onChange={(event) => setImage(event)} name="image" type="productImage" id="productImage" className={myStyles.inputText} value={newProduct.images[0]} />
 
                             <label htmlFor="productCost" className={myStyles.inputLabel}>Цена товара</label>
-                            <input onChange={(event) => changeHandler(event)} name="price" value={newProduct.price ? String(newProduct.price) : ''}
+                            <input onChange={(event) => changeHandlerPrice(event)} name="price" value={newProduct.price ? String(newProduct.price) : ''}
                                 type="productCost" id="productCost" className={myStyles.inputText}
                             />
+                            {!isValidPrice && <div style={{ color: 'red' }}>Пожалуйста, введите число</div>}
 
                             <Button
                                 variant="contained"
-                                disabled={!newProduct.title || !newProduct.price || !newProduct.image}
+                                disabled={!newProduct.title || !newProduct.price || !newProduct.images}
                                 className={myStyles.Button}
                                 onClick={() => addProduct()}>
                                 Добавить товар
@@ -116,7 +136,10 @@ const FormAddProduct: React.FC = () => {
                         </div>
                     </form>
                 </div>
-                <ProductView deleteProduct={true} />
+                <div className={myStyles.scroll}>
+                    <ProductView willDeleteProduct={true} willLoadFunc={false} />
+                </div>
+
             </div>
         </>
     )
